@@ -65,8 +65,8 @@
 		</tr>
 	</table>
 
-	<a href="http://localhost:8080/fitbit/heart">Srce</a>
-	<a href="http://localhost:8080/fitbit/weigth">Teža</a>
-	<a href="http://localhost:8080/fitbit/bp">Krvni pritisk</a>
+	<a href="http://localhost:8080/fitbit/heart?date=2012-05-16">Srce</a>
+	<a href="http://localhost:8080/fitbit/weigth?date=2012-05-16">Teža</a>
+	<a href="http://localhost:8080/fitbit/bp?date=2012-05-16">Krvni pritisk</a>
 </body>
 </html>

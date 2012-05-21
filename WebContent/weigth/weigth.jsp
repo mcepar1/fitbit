@@ -1,5 +1,6 @@
-<%--@elvariable id="weigth" type="java.lang.Double"--%>
+<%--@elvariable id="weight" type="java.lang.Double"--%>
 <%--@elvariable id="date" type="java.lang.String"--%>
+<%--@elvariable id="errors" type="java.util.List"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -10,6 +11,16 @@
 <title>Teža</title>
 </head>
 <body>
+
+	<c:if test="${errors != null}">
+		<h1>Napake:</h1>
+		<ul>
+			<c:forEach var="message" items="${errors}">
+				<li>${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+
 	<h1>Prikaži podatke</h1>
 	<form action="/fitbit/weigth" method="get">
 		<table>
@@ -23,11 +34,11 @@
 			</tr>
 		</table>
 
-		<c:if test="${weigth != null}">
+		<c:if test="${weight != null}">
 			<table>
 				<tr>
 					<td>Teža:</td>
-					<td>${weigth}</td>
+					<td>${weight}</td>
 				</tr>
 			</table>
 		</c:if>
@@ -43,7 +54,7 @@
 
 			<tr>
 				<td>Teža:</td>
-				<td><input type="text" name="weigth" /></td>
+				<td><input type="text" name="weight" /></td>
 			</tr>
 
 			<tr>

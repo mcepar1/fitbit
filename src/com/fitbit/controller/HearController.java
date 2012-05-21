@@ -43,18 +43,18 @@ public class HearController extends FitbitServlet {
 						.getLoggedHeartRate(
 								new LocalUserDetail(Constants.LOCAL_USER_ID),
 								FitbitUser.CURRENT_AUTHORIZED_USER,
-								FitbitApiService
-										.getValidLocalDateOrNull(request
-												.getParameter(Constants.DATE_PARAMETER)));
-				request.setAttribute("heart", h);
-				request.setAttribute(Constants.DATE_PARAMETER, request.getParameter(Constants.DATE_PARAMETER));
-				request.getRequestDispatcher("/heart/heart.jsp").forward(
-						request, response);
+								FitbitApiService.getValidLocalDateOrNull(request
+										.getParameter(Constants.DATE_PARAMETER)));
+				request.setAttribute(Constants.HEART_PARAMETER, h);
+				request.setAttribute(Constants.DATE_PARAMETER,
+						request.getParameter(Constants.DATE_PARAMETER));
 			} else {
-				request.setAttribute(Constants.ERRORS_PARAMETER, this.verifyGetParameters(request));
-				request.getRequestDispatcher("/heart/heart.jsp").forward(
-						request, response);
+				request.setAttribute(Constants.ERRORS_PARAMETER,
+						this.verifyGetParameters(request));
+
 			}
+			request.getRequestDispatcher("/heart/heart.jsp").forward(request,
+					response);
 
 		} catch (FitbitAPIException e) {
 			// TODO Auto-generated catch block
@@ -69,33 +69,42 @@ public class HearController extends FitbitServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		LocalUserDetail localUser = new LocalUserDetail(Constants.LOCAL_USER_ID);
-		String tracker = request.getParameter("tracker");
-		int rate = Integer.parseInt(request.getParameter("rate"));
-		LocalDate date = FitbitApiService.getValidLocalDateOrNull(request
-				.getParameter(Constants.DATE_PARAMETER));
-		String time = request.getParameter("time");
+		if (this.verifyPostParameters(request).isEmpty()) {
+			LocalUserDetail localUser = new LocalUserDetail(
+					Constants.LOCAL_USER_ID);
+			String tracker = request.getParameter(Constants.TRACKER_PARAMETER);
+			int rate = Integer.parseInt(request
+					.getParameter(Constants.RATE_PARAMETER));
+			LocalDate date = FitbitApiService.getValidLocalDateOrNull(request
+					.getParameter(Constants.DATE_PARAMETER));
+			String time = request.getParameter(Constants.TIME_PARAMETER);
 
-		try {
-			SessionUtils.getClientService(request).getClient()
-					.logHeartRate(localUser, tracker, rate, date, time);
-		} catch (FitbitAPIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				SessionUtils.getClientService(request).getClient()
+						.logHeartRate(localUser, tracker, rate, date, time);
+			} catch (FitbitAPIException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.doGet(request, response);
+		} else {
+			request.setAttribute(Constants.ERRORS_PARAMETER,
+					this.verifyPostParameters(request));
+			request.getRequestDispatcher("/heart/heart.jsp").forward(request,
+					response);
 		}
-		this.doGet(request, response);
 	}
 
 	@Override
 	protected List<String> verifyGetParameters(HttpServletRequest request) {
 		List<String> errors = new ArrayList<String>();
-		if (request.getParameter(Constants.DATE_PARAMETER) == null || request.getParameter(Constants.DATE_PARAMETER).length() == 0)
-		{
+		if (request.getParameter(Constants.DATE_PARAMETER) == null
+				|| request.getParameter(Constants.DATE_PARAMETER).length() == 0) {
 			errors.add(Constants.DATE_MISSING_MESSAGE);
 		}
-		
-		if (FitbitApiService.getValidLocalDateOrNull(request.getParameter(Constants.DATE_PARAMETER)) == null)
-		{
+
+		if (FitbitApiService.getValidLocalDateOrNull(request
+				.getParameter(Constants.DATE_PARAMETER)) == null) {
 			errors.add(Constants.DATE_INVALID_FORMAT_MESSAGE);
 		}
 		return errors;
@@ -103,8 +112,32 @@ public class HearController extends FitbitServlet {
 
 	@Override
 	protected List<String> verifyPostParameters(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> messages = this.verifyGetParameters(request);
+
+		if (request.getParameter(Constants.RATE_PARAMETER) != null) {
+			try {
+
+				Integer.parseInt(request.getParameter(Constants.RATE_PARAMETER));
+			} catch (NumberFormatException e) {
+				messages.add(Constants.RATE_PARAMETER_NAN);
+			}
+		} else {
+			messages.add(Constants.RATE_PARAMETER_MISSING);
+		}
+
+		if (request.getParameter(Constants.TRACKER_PARAMETER) == null
+				|| request.getParameter(Constants.TRACKER_PARAMETER).length() == 0) {
+			messages.add(Constants.TRACKER_PARAMETER_MISSING);
+		}
+
+		if (request.getParameter(Constants.TIME_PARAMETER) != null
+				&& request.getParameter(Constants.TIME_PARAMETER).length() > 0
+				&& FitbitApiService.getValidTimeOrNull(request
+						.getParameter(Constants.TIME_PARAMETER)) == null) {
+			messages.add(Constants.TIME_INVALID_FORMAT_MESSAGE);
+		}
+
+		return messages;
 	}
 
 }
