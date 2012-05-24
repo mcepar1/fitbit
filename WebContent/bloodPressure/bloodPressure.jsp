@@ -41,9 +41,8 @@
 		</div>
 
 	</form>
-	
-	<script type="text/JavaScript">
 
+	<script type="text/JavaScript">
 		$(document).ready(function() {
 			$('#post').validate({
 				rules : {
@@ -71,7 +70,9 @@
 
 <rapid:override name="body">
 
-	<table>
+	<h1>Podatki o krvnem pritisku za ${date}.</h1>
+
+	<table border="2">
 		<tr>
 			<th>ID</th>
 			<th>Sistolični pritisk</th>
@@ -83,7 +84,10 @@
 				<td>${bpLog.logId}</td>
 				<td>${bpLog.systolic}</td>
 				<td>${bpLog.diastolic}</td>
-				<th><a href="#">Brisi</a></th>
+				<td><a href="#"><div class="ym-fbox-button">
+							<button type="submit" class="ym-button ym-delete"
+								style="margin: 0">Izbrisi</button>
+						</div></a></td>
 			</tr>
 		</c:forEach>
 	</table>
