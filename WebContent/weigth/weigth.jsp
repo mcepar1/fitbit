@@ -8,80 +8,62 @@
 
 <rapid:override name="title">Teža</rapid:override>
 
-<rapid:override name="body">
-	<c:if test="${errors != null}">
-		<h1>Napake:</h1>
-		<ul>
-			<c:forEach var="message" items="${errors}">
-				<li>${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
+<rapid:override name="showForm">
+	<%@include file="../common/errors.jsp"%>
+	<jsp:include page="../common/showForm.jsp">
+		<jsp:param value="/fitbit/heart" name="action" />
+	</jsp:include>
+</rapid:override>
 
-	<h1>Prikaži podatke</h1>
-	<form action="/fitbit/weigth" method="get" id="view">
-		<table>
-			<tr>
-				<td>Datum:</td>
-				<td><input name="date" type="text" value="${date}" /></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Prikaži" /></td>
-			</tr>
-		</table>
+<rapid:override name="postForm">
+	<form action="/fitbit/weigth" method="post" id="post"
+		class="ym-form ym-columnar">
 
-		<c:if test="${weight != null}">
-			<table>
-				<tr>
-					<td>Teža:</td>
-					<td>${weight}</td>
-				</tr>
-			</table>
-		</c:if>
-	</form>
+		<h2>Vnesi podatke</h2>
 
-	<h1>Vnesi podatke</h1>
-	<form action="/fitbit/weigth" method="post" id="post">
-		<table>
-			<tr>
-				<td>Datum:</td>
-				<td><input name="date" type="text" /></td>
-			</tr>
+		<div class="ym-fbox-text">
+			<label for="date_post">Datum:</label> <input id="date_post"
+				name="date" type="text" value="${date}" />
+		</div>
+		<div class="ym-fbox-text">
+			<label for="weight">Tracker:</label> <input id="weight" name="weight"
+				type="text" value="" />
+		</div>
 
-			<tr>
-				<td>Teža:</td>
-				<td><input type="text" name="weight" /></td>
-			</tr>
-
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Shrani podatke" /></td>
-			</tr>
-		</table>
+		<div class="ym-fbox-button">
+			<button type="submit" class="ym-button ym-save">Shrani</button>
+		</div>
 
 	</form>
-	
+
 	<script type="text/JavaScript">
-	$(document).ready(function(){
-		   $('#view').validate ({
-				   rules: {
-					   date: {required: true, date: true}
-				   }
-		   });
-	});
-	
-	$(document).ready(function(){
-		   $('#post').validate ({
-				   rules: {
-					   date: {required: true, date: true},
-					   weight: {required: true, number:true}
-					   
-				   }
-		   });
-	});
+		$(document).ready(function() {
+			$('#post').validate({
+				rules : {
+					date : {
+						required : true,
+						date : true
+					},
+					weight : {
+						required : true,
+						number : true
+					}
+
+				}
+			});
+		});
 	</script>
-	
+</rapid:override>
+
+<rapid:override name="body">
+
+	<table>
+		<tr>
+			<td>Teža:</td>
+			<td>${weight}</td>
+		</tr>
+	</table>
+
 </rapid:override>
 
 

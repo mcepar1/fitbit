@@ -9,3 +9,7 @@ body {
 .ym-vlist li span {
 	color: black;
 }
+
+form > h2 {
+	color: #666666;
+}

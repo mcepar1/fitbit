@@ -21,6 +21,29 @@
 		max: jQuery.validator.format("Število mora biti manjše (ali enako) od {0}!"),
 	    min: jQuery.validator.format("Število mora biti večje (ali enako) od {0}!")
 	});
+	
+	
+	$.validator.setDefaults({
+	    showErrors: function(errorMap, errorList) {
+	        if (errorList.length < 1) {
+	            $('label.error').remove();
+	            return;
+	        }
+	        $.each(errorList, function(index, error) {
+	            $(error.element).next('label.error').remove();
+	            $(error.element).after(
+	                $('<div/>')
+	                    .addClass('ym-fbox-text')
+	                    .addClass('ym-error')
+	                    .append($('<p/>')
+	                    		.addClass('ym-message')
+	                    		.text(error.message))
+	            );
+	        });
+	    }
+	});
+	
+	
 </script>
 
 <title><rapid:block name="title"></rapid:block></title>
@@ -59,6 +82,10 @@
 					</ul>
 				</nav>
 			</div>
+			
+			<rapid:block name="showForm"></rapid:block>
+			<rapid:block name="postForm"></rapid:block>
+			
 		</div>
 		<div class="ym-g80 ym-gr">
 			<div class="ym-gbox">

@@ -7,97 +7,87 @@
 <%@ taglib uri="http://www.rapid-framework.org.cn/rapid" prefix="rapid"%>
 
 <rapid:override name="title">Krvni pritisk</rapid:override>
-<rapid:override name="body">
 
-	<c:if test="${errors != null}">
-		<h1>Napake:</h1>
-		<ul>
-			<c:forEach var="message" items="${errors}">
-				<li>${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
+<rapid:override name="showForm">
+	<%@include file="../common/errors.jsp"%>
+	<jsp:include page="../common/showForm.jsp">
+		<jsp:param value="/fitbit/bp" name="action" />
+	</jsp:include>
+</rapid:override>
 
-	<h1>Prikaži podatke</h1>
-	<form action="/fitbit/bp" method="get" id="view">
-		<table>
-			<tr>
-				<td>Datum:</td>
-				<td><input name="date" type="text" value="${date}" /></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Prikaži" /></td>
-			</tr>
-		</table>
+<rapid:override name="postForm">
 
-		<c:if test="${bp != null}">
-			<table>
-				<tr>
-					<th>ID</th>
-					<th>Sistolični</th>
-					<th>Diastolični</th>
-					<th></th>
-				</tr>
-				<c:forEach var="bpLog" items="${bp.bp}">
-					<tr>
-						<td>${bpLog.logId}</td>
-						<td>${bpLog.systolic}</td>
-						<td>${bpLog.diastolic}</td>
-						<th><a href="#">Brisi</a></th>
-					</tr>
-				</c:forEach>
-			</table>
-			<hr />
-		</c:if>
-	</form>
+	<form action="/fitbit/bp" method="post" id="post"
+		class="ym-form ym-columnar">
+		<h2>Vnesi podatke</h2>
 
-	<h1>Vnesi podatke</h1>
-	<form action="/fitbit/bp" method="post" id="post">
-		<table>
-			<tr>
-				<td>Datum:</td>
-				<td><input name="date" type="text" /></td>
-			</tr>
+		<div class="ym-fbox-text">
+			<label for="date_post">Datum:</label> <input id="date_post"
+				name="date" type="text" value="${date}" />
+		</div>
 
-			<tr>
-				<td>Sistolični:</td>
-				<td><input type="text" name="systolic" /></td>
-			</tr>
+		<div class="ym-fbox-text">
+			<label for="systolic">Sistolični pritisk:</label> <input
+				id="systolic" name="systolic" type="text" value="" />
+		</div>
 
-			<tr>
-				<td>Diastolični:</td>
-				<td><input type="text" name="diastolic" /></td>
-			</tr>
+		<div class="ym-fbox-text">
+			<label for="diastolic">Diastolični pritisk:</label> <input
+				id="diastolic" name="diastolic" type="text" value="" />
+		</div>
 
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Shrani podatke" /></td>
-			</tr>
-		</table>
+		<div class="ym-fbox-button">
+			<button type="submit" class="ym-button ym-save">Shrani</button>
+		</div>
 
 	</form>
 	
 	<script type="text/JavaScript">
-	$(document).ready(function(){
-		   $('#view').validate ({
-				   rules: {
-					   date: {required: true, date: true}
-				   }
-		   });
-	});
-	
-	$(document).ready(function(){
-		   $('#post').validate ({
-				   rules: {
-					   date: {required: true, date: true},
-					   systolic: {required: true, digits:true, min: 1, max: 300},
-					   diastolic: {required: true, digits:true, min: 1, max: 300}
-				   }
-		   });
-	});
+
+		$(document).ready(function() {
+			$('#post').validate({
+				rules : {
+					date : {
+						required : true,
+						date : true
+					},
+					systolic : {
+						required : true,
+						digits : true,
+						min : 1,
+						max : 300
+					},
+					diastolic : {
+						required : true,
+						digits : true,
+						min : 1,
+						max : 300
+					}
+				}
+			});
+		});
 	</script>
-	
+</rapid:override>
+
+<rapid:override name="body">
+
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Sistolični pritisk</th>
+			<th>Diastolični pritisk</th>
+			<th></th>
+		</tr>
+		<c:forEach var="bpLog" items="${bp.bp}">
+			<tr>
+				<td>${bpLog.logId}</td>
+				<td>${bpLog.systolic}</td>
+				<td>${bpLog.diastolic}</td>
+				<th><a href="#">Brisi</a></th>
+			</tr>
+		</c:forEach>
+	</table>
+
 </rapid:override>
 
 <%@include file="../template.jsp"%>
