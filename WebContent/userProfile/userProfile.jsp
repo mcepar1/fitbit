@@ -1,11 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%--@elvariable id="userInfo" type="com.fitbit.api.common.model.user.UserInfo"--%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<html>
-<head>
-<title>Uporabnik</title>
-</head>
-<body>
+<%@ taglib uri="http://www.rapid-framework.org.cn/rapid" prefix="rapid"%>
 
+<rapid:override name="title">Uporabnik</rapid:override>
+<rapid:override name="body">
 	<table>
 		<tr>
 			<td>Polno ime:</td>
@@ -64,9 +63,6 @@
 			<td>${userInfo.offsetFromUTCMillis}</td>
 		</tr>
 	</table>
+</rapid:override>
 
-	<a href="http://localhost:8080/fitbit/heart?date=2012-05-16">Srce</a>
-	<a href="http://localhost:8080/fitbit/weigth?date=2012-05-16">Teža</a>
-	<a href="http://localhost:8080/fitbit/bp?date=2012-05-16">Krvni pritisk</a>
-</body>
-</html>
+<%@include file="../template.jsp"%>

@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+html,
+body {
+	background-color: #888;
+	color: white;
+}
+
+.ym-vlist li span {
+	color: black;
+}

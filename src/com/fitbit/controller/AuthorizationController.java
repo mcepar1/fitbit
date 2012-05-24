@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.LocalDate;
-
 import com.fitbit.api.FitbitAPIException;
 import com.fitbit.api.client.FitbitAPIEntityCache;
 import com.fitbit.api.client.FitbitApiClientAgent;
@@ -22,12 +20,7 @@ import com.fitbit.api.client.FitbitApiSubscriptionStorage;
 import com.fitbit.api.client.FitbitApiSubscriptionStorageInMemoryImpl;
 import com.fitbit.api.client.LocalUserDetail;
 import com.fitbit.api.client.service.FitbitAPIClientService;
-import com.fitbit.api.common.model.heart.Heart;
-import com.fitbit.api.common.model.heart.HeartLog;
-import com.fitbit.api.common.model.user.UserInfo;
-import com.fitbit.api.common.service.FitbitApiService;
 import com.fitbit.api.model.APIResourceCredentials;
-import com.fitbit.api.model.FitbitUser;
 import com.fitbit.utils.SessionUtils;
 
 /**
@@ -98,16 +91,10 @@ public class AuthorizationController extends HttpServlet {
                     throw new ServletException("Unable to finish authorization with Fitbit.", e);
                 }
             }
-            try {
-            	SessionUtils.setClientService(request, apiClientService);
-            	apiClientService.saveResourceCredentials(new LocalUserDetail(resourceCredentials.getLocalUserId()), resourceCredentials);
-                UserInfo userInfo = apiClientService.getClient().getUserInfo(new LocalUserDetail(resourceCredentials.getLocalUserId()));
-                
-                request.setAttribute("userInfo", userInfo);
-                request.getRequestDispatcher("/userProfile/userProfile.jsp").forward(request, response);
-            } catch (FitbitAPIException e) {
-                throw new ServletException("Exception during getting user info", e);
-            }
+            SessionUtils.setClientService(request, apiClientService);
+            apiClientService.saveResourceCredentials(new LocalUserDetail(resourceCredentials.getLocalUserId()), resourceCredentials);
+            response.sendRedirect("user");
+            
         } else {
             try {
                 response.sendRedirect(apiClientService.getResourceOwnerAuthorizationURL(new LocalUserDetail("-"), exampleBaseUrl + "/auth?completeAuthorization="));

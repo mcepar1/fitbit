@@ -4,14 +4,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Teža</title>
-</head>
-<body>
+<%@ taglib uri="http://www.rapid-framework.org.cn/rapid" prefix="rapid"%>
 
+<rapid:override name="title">Teža</rapid:override>
+
+<rapid:override name="body">
 	<c:if test="${errors != null}">
 		<h1>Napake:</h1>
 		<ul>
@@ -22,11 +19,11 @@
 	</c:if>
 
 	<h1>Prikaži podatke</h1>
-	<form action="/fitbit/weigth" method="get">
+	<form action="/fitbit/weigth" method="get" id="view">
 		<table>
 			<tr>
 				<td>Datum:</td>
-				<td><input name="date" type="text" value="${date}"/></td>
+				<td><input name="date" type="text" value="${date}" /></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -45,7 +42,7 @@
 	</form>
 
 	<h1>Vnesi podatke</h1>
-	<form action="/fitbit/weigth" method="post">
+	<form action="/fitbit/weigth" method="post" id="post">
 		<table>
 			<tr>
 				<td>Datum:</td>
@@ -64,5 +61,28 @@
 		</table>
 
 	</form>
-</body>
-</html>
+	
+	<script type="text/JavaScript">
+	$(document).ready(function(){
+		   $('#view').validate ({
+				   rules: {
+					   date: {required: true, date: true}
+				   }
+		   });
+	});
+	
+	$(document).ready(function(){
+		   $('#post').validate ({
+				   rules: {
+					   date: {required: true, date: true},
+					   weight: {required: true, number:true}
+					   
+				   }
+		   });
+	});
+	</script>
+	
+</rapid:override>
+
+
+<%@include file="../template.jsp"%>

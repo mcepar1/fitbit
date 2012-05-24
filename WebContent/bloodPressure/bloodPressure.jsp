@@ -4,13 +4,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Krvni pritisk</title>
-</head>
-<body>
+<%@ taglib uri="http://www.rapid-framework.org.cn/rapid" prefix="rapid"%>
+
+<rapid:override name="title">Krvni pritisk</rapid:override>
+<rapid:override name="body">
 
 	<c:if test="${errors != null}">
 		<h1>Napake:</h1>
@@ -22,7 +19,7 @@
 	</c:if>
 
 	<h1>Prikaži podatke</h1>
-	<form action="/fitbit/bp" method="get">
+	<form action="/fitbit/bp" method="get" id="view">
 		<table>
 			<tr>
 				<td>Datum:</td>
@@ -38,8 +35,8 @@
 			<table>
 				<tr>
 					<th>ID</th>
-					<th>Systolic</th>
-					<th>Diastolic</th>
+					<th>Sistolični</th>
+					<th>Diastolični</th>
 					<th></th>
 				</tr>
 				<c:forEach var="bpLog" items="${bp.bp}">
@@ -56,7 +53,7 @@
 	</form>
 
 	<h1>Vnesi podatke</h1>
-	<form action="/fitbit/bp" method="post">
+	<form action="/fitbit/bp" method="post" id="post">
 		<table>
 			<tr>
 				<td>Datum:</td>
@@ -64,12 +61,12 @@
 			</tr>
 
 			<tr>
-				<td>Systolic:</td>
+				<td>Sistolični:</td>
 				<td><input type="text" name="systolic" /></td>
 			</tr>
 
 			<tr>
-				<td>Diastolic:</td>
+				<td>Diastolični:</td>
 				<td><input type="text" name="diastolic" /></td>
 			</tr>
 
@@ -80,5 +77,27 @@
 		</table>
 
 	</form>
-</body>
-</html>
+	
+	<script type="text/JavaScript">
+	$(document).ready(function(){
+		   $('#view').validate ({
+				   rules: {
+					   date: {required: true, date: true}
+				   }
+		   });
+	});
+	
+	$(document).ready(function(){
+		   $('#post').validate ({
+				   rules: {
+					   date: {required: true, date: true},
+					   systolic: {required: true, digits:true, min: 1, max: 300},
+					   diastolic: {required: true, digits:true, min: 1, max: 300}
+				   }
+		   });
+	});
+	</script>
+	
+</rapid:override>
+
+<%@include file="../template.jsp"%>
