@@ -26,11 +26,11 @@
 	$.validator.setDefaults({
 	    showErrors: function(errorMap, errorList) {
 	        if (errorList.length < 1) {
-	            $('label.error').remove();
+	            $('div.ym-error').remove();
 	            return;
 	        }
 	        $.each(errorList, function(index, error) {
-	            $(error.element).next('label.error').remove();
+	            $(error.element).next('div.ym-error').remove();
 	            $(error.element).after(
 	                $('<div/>')
 	                    .addClass('ym-fbox-text')

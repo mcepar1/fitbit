@@ -26,7 +26,7 @@
 				name="date" type="text" value="${date}" />
 		</div>
 		<div class="ym-fbox-text">
-			<label for="weight">Tracker:</label> <input id="weight" name="weight"
+			<label for="weight">Teža:</label> <input id="weight" name="weight"
 				type="text" value="" />
 		</div>
 
