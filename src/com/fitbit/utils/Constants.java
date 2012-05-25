@@ -36,4 +36,8 @@ public class Constants {
 	public static final String DIASTOLIC_PARAMETER = "diastolic";
 	public static final String DIASTOLIC_PARAMETER_MISSING = "Polje diastolic je obvezno!";
 	public static final String DIASTOLIC_PARAMETER_NAN = "Polje diastolic mora biti celo število!";
+	
+	public static final String ID_PARAMETER = "id";
+	public static final String NO_RESCORD_FOUND_ERROR = "Tak zapis ne obstaja!";
+	public static final String DELETE_SUCCESSFUL = "Zapis uspešno izbrisan.";
 }

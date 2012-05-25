@@ -74,20 +74,45 @@
 
 	<table border="2">
 		<tr>
-			<th>ID</th>
 			<th>Sistolični pritisk</th>
 			<th>Diastolični pritisk</th>
 			<th></th>
 		</tr>
 		<c:forEach var="bpLog" items="${bp.bp}">
-			<tr>
-				<td>${bpLog.logId}</td>
+			<tr id="${bpLog.logId}_row">
 				<td>${bpLog.systolic}</td>
 				<td>${bpLog.diastolic}</td>
-				<td><a href="#"><div class="ym-fbox-button">
-							<button type="submit" class="ym-button ym-delete"
-								style="margin: 0">Izbrisi</button>
-						</div></a></td>
+				<td><form id="${bpLog.logId}_form" action="deleteBp" method="get">
+						<input name="id" type="hidden" value="${bpLog.logId}" />
+						<div class="ym-fbox-button">
+							<button id="${bpLog.logId}_button" type="button"
+								class="ym-button ym-delete" style="margin: 0">Izbrisi</button>
+							<script type="text/javascript">
+								$("#${bpLog.logId}_button")
+										.click(
+												function() {
+													dataString = "id="
+															+ "${bpLog.logId}";
+
+													$
+															.getJSON(
+																	"deleteBp?",
+																	dataString,
+																	function(
+																			data) {
+																		if (data.succesful) {
+																			$(
+																					"#${bpLog.logId}_row")
+																					.remove();
+																			alert(data.message);
+																		} else {
+																			alert(data.message);
+																		}
+																	});
+												});
+							</script>
+						</div>
+					</form></td>
 			</tr>
 		</c:forEach>
 	</table>
